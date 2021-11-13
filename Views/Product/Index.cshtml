@@ -1,0 +1,21 @@
+﻿@model IList<ProductViewModel>
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Our products</h1>
+    <table class="table">
+        @foreach(ProductViewModel product in Model)
+        {
+        <tr>
+            <td>@product.Title</td>
+            <td>@product.Price</td>
+            <td><form asp-action="AddToCart" method="post">
+                    <button name="Id" type="submit" value="@product.Id" class="btn btn-primary">Add to cart</button>
+                </form>
+            </td>
+        </tr>
+        }
+    </table>
+</div>

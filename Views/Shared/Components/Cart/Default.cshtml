@@ -1,0 +1,53 @@
+@model CartViewModel
+@{
+    int quantitySum = Model.Lines.Sum(line => line.Quantity);
+}
+<li class="nav-item dropdown">
+
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+        aria-haspopup="true" aria-expanded="false">
+        <span style="position: relative;">&#x1F6D2;&#xFE0E;
+            @if (quantitySum > 0)
+            {
+            // Quantity badge
+            <span style="background-color: red; color: white; position: absolute; bottom: -10px; right: 0; border-radius: 50%; width: 16px; height: 16px; font-size: 11px; text-align: center;">@quantitySum</span>
+            }
+        </span>
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+        @if (quantitySum > 0)
+        {
+        <form asp-controller="Product" asp-action="RemoveFromCart" method="post">
+        <table class="table-sm dropdown-item disabled" style="pointer-events: all" cellpadding="3">
+            <thead>
+                <th>Product</th>
+                <th class="text-center">Qty</th>
+                <th class="text-right">Total</th>
+                <th></th>
+            </thead>
+            <tbody>
+            @foreach(CartLineViewModel line in Model.Lines)
+            {
+            <tr>
+                <td>@line.Title</td>
+                <td class="text-center">@line.Quantity</td>
+                <td class="text-right">@line.Total</td>
+                <td><button name="Id" class="btn btn-sm bg-transparent" value="@line.Id">&#x1f5d1;</button></td>
+            </tr>
+            }
+            </tbody>
+        </table>
+        </form>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item disabled">Total: @Model.Total</div>
+        <div class="dropdown-divider"></div>
+        <form asp-controller="Product" asp-action="ClearCart" method="post">
+            <button class="dropdown-item" type="submit">Clear cart</button>
+        </form>
+        }
+        else
+        {
+            <div class="dropdown-item disabled">Cart empty</div>
+        }
+    </div>
+</li>
